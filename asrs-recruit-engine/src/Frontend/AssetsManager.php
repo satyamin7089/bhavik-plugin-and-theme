@@ -60,6 +60,7 @@ class AssetsManager {
 				'submitLabel'  => __( 'Submit Application', 'asrs-recruit-engine' ),
 				'fileTooLarge' => __( 'Selected file exceeds the maximum allowed size.', 'asrs-recruit-engine' ),
 				'genericError' => __( 'Something went wrong. Please check your details and try again.', 'asrs-recruit-engine' ),
+				'recaptcha'    => $this->recaptcha_config(),
 			)
 		);
 
@@ -72,6 +73,36 @@ class AssetsManager {
 				true
 			);
 		}
+
+		if ( $this->settings->is_recaptcha_enabled() && ! wp_script_is( 'google-recaptcha', 'registered' ) ) {
+			$site_key = trim( (string) $this->settings->get( 'recaptcha_site_key', '' ) );
+			wp_register_script(
+				'google-recaptcha',
+				'v3' === $this->settings->get_recaptcha_version()
+					? add_query_arg( 'render', rawurlencode( $site_key ), 'https://www.google.com/recaptcha/api.js' )
+					: 'https://www.google.com/recaptcha/api.js?render=explicit',
+				array(),
+				null,
+				true
+			);
+		}
+	}
+
+	/**
+	 * Public (non-secret) reCAPTCHA settings for the frontend script.
+	 *
+	 * @return array<string, mixed>
+	 */
+	private function recaptcha_config(): array {
+		if ( ! $this->settings->is_recaptcha_enabled() ) {
+			return array( 'enabled' => false );
+		}
+		return array(
+			'enabled' => true,
+			'version' => $this->settings->get_recaptcha_version(),
+			'siteKey' => trim( (string) $this->settings->get( 'recaptcha_site_key', '' ) ),
+			'action'  => \ASRS\RecruitEngine\Security\SecurityManager::RECAPTCHA_ACTION,
+		);
 	}
 
 	public function enqueue_frontend(): void {
@@ -79,6 +110,9 @@ class AssetsManager {
 		wp_enqueue_script( 'asrs-recruit-frontend' );
 		if ( $this->settings->is_turnstile_enabled() ) {
 			wp_enqueue_script( 'cloudflare-turnstile' );
+		}
+		if ( $this->settings->is_recaptcha_enabled() ) {
+			wp_enqueue_script( 'google-recaptcha' );
 		}
 	}
 

@@ -364,6 +364,17 @@ class CareersRenderer {
 							<div class="cf-turnstile" data-sitekey="<?php echo esc_attr( (string) $this->settings->get( 'turnstile_site_key', '' ) ); ?>"></div>
 						</div>
 					<?php endif; ?>
+
+					<?php if ( $this->settings->is_recaptcha_enabled() ) : ?>
+						<?php if ( 'v3' === $this->settings->get_recaptcha_version() ) : ?>
+							<input type="hidden" name="g-recaptcha-response" class="asrs-recaptcha-token" value="" />
+						<?php else : ?>
+							<div class="asrs-field-group asrs-field-full asrs-recruit-captcha">
+								<div class="asrs-g-recaptcha" data-sitekey="<?php echo esc_attr( trim( (string) $this->settings->get( 'recaptcha_site_key', '' ) ) ); ?>"></div>
+								<div class="asrs-field-error" data-error-for="recaptcha"></div>
+							</div>
+						<?php endif; ?>
+					<?php endif; ?>
 				</div>
 
 				<div class="asrs-form-feedback" data-asrs-feedback hidden></div>

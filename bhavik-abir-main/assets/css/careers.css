@@ -1,0 +1,121 @@
+/* ==========================================================================
+   Careers page (page-template/template-careers.php)
+   --------------------------------------------------------------------------
+   Banner: the shared site-wide banner (background, padding and decorative
+   ring come from the shared banner system in site.css via .ab-legal-hero).
+   Body: a soft mint surface with blurred colour fields so the ASRS Recruit
+   Engine glass cards (asrs-recruit.css) read with real depth.
+
+   The design foundation is copied 1:1 from the Contact / Legal foundation so
+   font, spacing, colour and container sizing stay identical site-wide.
+   ========================================================================== */
+
+.ab-careers-page {
+    --ab-teal: #008080;
+    --ab-blue: #1D4E9F;
+    --ab-orange: #F58220;
+    --ab-charcoal: #4D4D4E;
+    --ab-ink: #142334;
+    --ab-muted: #536572;
+    --ab-paper: #f6f8f7;
+    --ab-white: #fff;
+    --ab-mist: #eaf3f2;
+    --ab-radius: 24px;
+    --ab-max: 1240px;
+    color: var(--ab-charcoal);
+    font-family: "Reddit Sans", Arial, Helvetica, sans-serif;
+    font-size: 17px;
+    line-height: 1.68;
+    -webkit-font-smoothing: antialiased;
+}
+.ab-careers-page *,
+.ab-careers-page *::before,
+.ab-careers-page *::after { box-sizing: border-box; }
+.ab-careers-page img,
+.ab-careers-page svg { max-width: 100%; }
+.ab-careers-page .ab-wrap { width: min(1240px, calc(100% - 56px)); margin-inline: auto; }
+.ab-careers-page h1,
+.ab-careers-page h2,
+.ab-careers-page h3,
+.ab-careers-page h4 {
+    margin: 18px 0 18px;
+    color: var(--ab-ink);
+    font-weight: 700;
+    line-height: 1.12;
+    letter-spacing: -.025em;
+}
+.ab-careers-page h1 { font-size: 60px; }
+.ab-careers-page h2 { font-size: 52px; }
+.ab-careers-page h3 { font-size: 22px; }
+.ab-careers-page p { margin: 0 0 1em; }
+.ab-careers-page .ab-section { position: relative; scroll-margin-top: 100px; }
+
+/* Banner ------------------------------------------------------------------ */
+.ab-careers-hero { text-align: center; }
+.ab-careers-hero .ab-wrap { position: relative; z-index: 1; }
+.ab-careers-hero .ab-eyebrow { margin-inline: auto; }
+.ab-careers-hero h1 { margin: 12px 0 0; text-wrap: balance; }
+.ab-careers-intro {
+    max-width: 720px;
+    margin: 18px auto 0 !important;
+    color: var(--ab-muted);
+    font-size: 17px;
+    line-height: 1.68;
+}
+
+/* Portal surface --------------------------------------------------------- */
+.ab-careers-main {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    padding: var(--ab-section-pad, 100px) 0;
+    background: linear-gradient(180deg, #fff 0%, #f6faf9 46%, #eef5f4 100%);
+}
+.ab-careers-backdrop {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+}
+.ab-careers-backdrop span {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(70px);
+    opacity: .55;
+}
+.ab-careers-backdrop span:nth-child(1) {
+    top: 6%;
+    left: -120px;
+    width: 420px;
+    height: 420px;
+    background: radial-gradient(circle, rgba(0, 128, 128, .22), rgba(0, 128, 128, 0) 70%);
+}
+.ab-careers-backdrop span:nth-child(2) {
+    top: 38%;
+    right: -140px;
+    width: 460px;
+    height: 460px;
+    background: radial-gradient(circle, rgba(245, 130, 32, .16), rgba(245, 130, 32, 0) 70%);
+}
+.ab-careers-backdrop span:nth-child(3) {
+    bottom: -160px;
+    left: 34%;
+    width: 520px;
+    height: 360px;
+    background: radial-gradient(circle, rgba(29, 78, 159, .10), rgba(29, 78, 159, 0) 70%);
+}
+
+@media (max-width: 1100px) {
+    .ab-careers-page .ab-wrap { width: min(1240px, calc(100% - 42px)); }
+}
+@media (max-width: 767px) {
+    .ab-careers-page p,
+    .ab-careers-page li { font-size: 16px; }
+    .ab-careers-page h1 { font-size: clamp(36px, 8vw, 44px); }
+    .ab-careers-page h2 { font-size: clamp(30px, 6.5vw, 38px); }
+    .ab-careers-intro { font-size: 16px; }
+    .ab-careers-main { padding: 62px 0 70px; }
+}
+@media (max-width: 600px) {
+    .ab-careers-page .ab-wrap { width: calc(100% - 36px); }
+}

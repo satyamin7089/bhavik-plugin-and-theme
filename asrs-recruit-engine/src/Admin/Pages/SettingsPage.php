@@ -160,6 +160,20 @@ class SettingsPage {
 							</td>
 						</tr>
 						<tr>
+							<th scope="row"><?php esc_html_e( 'Google reCAPTCHA (Optional)', 'asrs-recruit-engine' ); ?></th>
+							<td>
+								<label><input type="checkbox" name="general[recaptcha_enabled]" value="1" <?php checked( ! empty( $general['recaptcha_enabled'] ) ); ?> /> <?php esc_html_e( 'Enable Google reCAPTCHA on job applications', 'asrs-recruit-engine' ); ?></label><br />
+								<select name="general[recaptcha_version]" style="margin-top:6px;">
+									<option value="v2" <?php selected( (string) ( $general['recaptcha_version'] ?? 'v2' ), 'v2' ); ?>><?php esc_html_e( 'v2 — "I\'m not a robot" checkbox', 'asrs-recruit-engine' ); ?></option>
+									<option value="v3" <?php selected( (string) ( $general['recaptcha_version'] ?? 'v2' ), 'v3' ); ?>><?php esc_html_e( 'v3 — invisible score-based', 'asrs-recruit-engine' ); ?></option>
+								</select><br />
+								<input type="text" class="regular-text" style="margin-top:6px;" name="general[recaptcha_site_key]" value="<?php echo esc_attr( (string) ( $general['recaptcha_site_key'] ?? '' ) ); ?>" placeholder="<?php esc_attr_e( 'Site Key', 'asrs-recruit-engine' ); ?>" /><br />
+								<input type="password" class="regular-text" style="margin-top:6px;" name="general[recaptcha_secret_key]" value="" placeholder="<?php echo '' !== (string) ( $general['recaptcha_secret_key'] ?? '' ) ? esc_attr__( 'Secret Key saved (leave blank to keep)', 'asrs-recruit-engine' ) : esc_attr__( 'Secret Key', 'asrs-recruit-engine' ); ?>" autocomplete="new-password" /><br />
+								<label style="display:inline-block;margin-top:6px;"><?php esc_html_e( 'v3 minimum score', 'asrs-recruit-engine' ); ?> <input type="number" min="0" max="1" step="0.1" style="width:80px;" name="general[recaptcha_min_score]" value="<?php echo esc_attr( (string) ( $general['recaptcha_min_score'] ?? 0.5 ) ); ?>" /></label>
+								<p class="description"><?php esc_html_e( 'Create keys at google.com/recaptcha/admin for this domain; the key type must match the selected version. The secret key is stored encrypted. The minimum score (0.0 – 1.0, recommended 0.5) is only used with v3.', 'asrs-recruit-engine' ); ?></p>
+							</td>
+						</tr>
+						<tr>
 							<th scope="row"><?php esc_html_e( 'Uninstall Cleanup', 'asrs-recruit-engine' ); ?></th>
 							<td><label><input type="checkbox" name="general[delete_data_on_uninstall]" value="1" <?php checked( ! empty( $general['delete_data_on_uninstall'] ) ); ?> /> <?php esc_html_e( 'Delete all applications & settings if plugin is uninstalled', 'asrs-recruit-engine' ); ?></label></td>
 						</tr>
@@ -208,6 +222,11 @@ class SettingsPage {
 			'turnstile_enabled'        => ! empty( $raw_gen['turnstile_enabled'] ),
 			'turnstile_site_key'       => sanitize_text_field( (string) ( $raw_gen['turnstile_site_key'] ?? '' ) ),
 			'turnstile_secret_key'     => '' !== trim( (string) ( $raw_gen['turnstile_secret_key'] ?? '' ) ) ? trim( (string) $raw_gen['turnstile_secret_key'] ) : (string) $current_gen['turnstile_secret_key'],
+			'recaptcha_enabled'        => ! empty( $raw_gen['recaptcha_enabled'] ),
+			'recaptcha_version'        => 'v3' === (string) ( $raw_gen['recaptcha_version'] ?? 'v2' ) ? 'v3' : 'v2',
+			'recaptcha_site_key'       => sanitize_text_field( (string) ( $raw_gen['recaptcha_site_key'] ?? '' ) ),
+			'recaptcha_secret_key'     => '' !== trim( (string) ( $raw_gen['recaptcha_secret_key'] ?? '' ) ) ? trim( (string) $raw_gen['recaptcha_secret_key'] ) : (string) $current_gen['recaptcha_secret_key'],
+			'recaptcha_min_score'      => round( max( 0.0, min( 1.0, (float) ( $raw_gen['recaptcha_min_score'] ?? 0.5 ) ) ), 2 ),
 			'delete_data_on_uninstall' => ! empty( $raw_gen['delete_data_on_uninstall'] ),
 		);
 		$this->settings->save_all( $new_gen );
