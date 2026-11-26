@@ -1,0 +1,402 @@
+/* ASRS Recruit Engine — White-label Careers Portal Styles */
+.asrs-recruit-wrapper {
+	--asrs-navy: #142334;
+	--asrs-slate: #4f606c;
+	--asrs-input-bg: #f2f7f6;
+	--asrs-border: #e8eded;
+	--asrs-focus: #9ec9c9;
+	--asrs-orange: #f68820;
+	--asrs-orange-dark: #e46f0e;
+	--asrs-surface: #ffffff;
+	--asrs-radius: 10px;
+	font-family: inherit;
+	color: var(--asrs-navy);
+	max-width: 1120px;
+	margin: 0 auto;
+	padding: 8px 0 32px;
+	box-sizing: border-box;
+}
+
+.asrs-recruit-wrapper *,
+.asrs-recruit-wrapper *::before,
+.asrs-recruit-wrapper *::after {
+	box-sizing: border-box;
+}
+
+.asrs-recruit-wrapper .asrs-recruit-hero {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	gap: 16px;
+	margin-bottom: 24px;
+}
+
+.asrs-recruit-wrapper .asrs-recruit-title {
+	margin: 0 0 6px;
+	font-size: 30px;
+	line-height: 1.2;
+	font-weight: 700;
+	color: var(--asrs-navy);
+}
+
+.asrs-recruit-wrapper .asrs-recruit-subtitle {
+	margin: 0;
+	font-size: 15px;
+	color: var(--asrs-slate);
+}
+
+.asrs-recruit-wrapper .asrs-recruit-count-pill {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	padding: 8px 16px;
+	border-radius: 999px;
+	background: var(--asrs-input-bg);
+	border: 1px solid var(--asrs-border);
+	color: var(--asrs-navy);
+	font-size: 13px;
+	font-weight: 600;
+}
+
+.asrs-recruit-wrapper .asrs-recruit-filters {
+	display: grid;
+	grid-template-columns: 1.5fr repeat(3, minmax(0, 1fr));
+	gap: 12px;
+	margin-bottom: 24px;
+}
+
+.asrs-recruit-wrapper .asrs-recruit-input,
+.asrs-recruit-wrapper select.asrs-recruit-input,
+.asrs-recruit-wrapper textarea.asrs-recruit-input {
+	width: 100%;
+	height: 46px;
+	padding: 10px 14px;
+	border: 1.5px solid var(--asrs-border);
+	border-radius: 8px;
+	background-color: var(--asrs-input-bg);
+	color: var(--asrs-navy);
+	font-size: 14px;
+	font-family: inherit;
+	transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+	outline: none;
+	appearance: auto;
+}
+
+.asrs-recruit-wrapper textarea.asrs-recruit-textarea {
+	height: auto;
+	min-height: 112px;
+	resize: vertical;
+}
+
+.asrs-recruit-wrapper .asrs-recruit-input:focus {
+	background-color: #ffffff;
+	border-color: var(--asrs-focus);
+	box-shadow: 0 0 0 3px rgba(158, 201, 201, 0.25);
+}
+
+.asrs-recruit-wrapper .asrs-jobs-grid {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 20px;
+}
+
+.asrs-recruit-wrapper .asrs-job-card {
+	display: flex;
+	flex-direction: column;
+	background: var(--asrs-surface);
+	border: 1.5px solid var(--asrs-border);
+	border-radius: var(--asrs-radius);
+	padding: 24px;
+	transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.asrs-recruit-wrapper .asrs-job-card:hover {
+	transform: translateY(-2px);
+	border-color: var(--asrs-focus);
+	box-shadow: 0 12px 28px rgba(20, 35, 52, 0.07);
+}
+
+.asrs-recruit-wrapper .asrs-job-card-top {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	margin-bottom: 12px;
+}
+
+.asrs-recruit-wrapper .asrs-job-badge {
+	display: inline-block;
+	padding: 4px 10px;
+	border-radius: 999px;
+	background: var(--asrs-input-bg);
+	color: var(--asrs-navy);
+	font-size: 12px;
+	font-weight: 600;
+}
+
+.asrs-recruit-wrapper .asrs-job-badge-remote {
+	background: rgba(246, 136, 32, 0.14);
+	color: #b45309;
+}
+
+.asrs-recruit-wrapper .asrs-job-card-title {
+	margin: 0 0 10px;
+	font-size: 20px;
+	line-height: 1.3;
+	font-weight: 700;
+}
+
+.asrs-recruit-wrapper .asrs-job-card-title a {
+	color: var(--asrs-navy);
+	text-decoration: none;
+}
+
+.asrs-recruit-wrapper .asrs-job-card-title a:hover {
+	color: var(--asrs-orange-dark);
+}
+
+.asrs-recruit-wrapper .asrs-job-meta {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px 16px;
+	font-size: 13px;
+	color: var(--asrs-slate);
+	margin-bottom: 12px;
+}
+
+.asrs-recruit-wrapper .asrs-job-excerpt {
+	margin: 0 0 20px;
+	font-size: 14px;
+	line-height: 1.55;
+	color: var(--asrs-slate);
+	flex: 1;
+}
+
+.asrs-recruit-wrapper .asrs-job-card-footer {
+	margin-top: auto;
+}
+
+.asrs-recruit-wrapper .asrs-recruit-btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+	padding: 12px 22px;
+	border: none;
+	border-radius: 8px;
+	background: linear-gradient(135deg, #ff9137 0%, var(--asrs-orange) 50%, var(--asrs-orange-dark) 100%);
+	color: #ffffff;
+	font-size: 14px;
+	font-weight: 600;
+	text-decoration: none;
+	cursor: pointer;
+	transition: transform 0.15s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+	box-shadow: 0 4px 12px rgba(246, 136, 32, 0.25);
+}
+
+.asrs-recruit-wrapper .asrs-recruit-btn:hover {
+	transform: translateY(-1px);
+	box-shadow: 0 6px 18px rgba(246, 136, 32, 0.35);
+	color: #ffffff;
+}
+
+.asrs-recruit-wrapper .asrs-recruit-btn[disabled] {
+	opacity: 0.7;
+	cursor: wait;
+}
+
+.asrs-recruit-wrapper .asrs-recruit-back-row {
+	margin-bottom: 20px;
+}
+
+.asrs-recruit-wrapper .asrs-recruit-back-link {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	font-size: 14px;
+	font-weight: 600;
+	color: var(--asrs-navy);
+	text-decoration: none;
+}
+
+.asrs-recruit-wrapper .asrs-recruit-back-link:hover {
+	color: var(--asrs-orange-dark);
+}
+
+.asrs-recruit-wrapper .asrs-recruit-detail-layout {
+	display: grid;
+	grid-template-columns: 1.15fr 0.85fr;
+	gap: 28px;
+	align-items: start;
+}
+
+.asrs-recruit-wrapper .asrs-job-meta-detail {
+	padding: 14px 16px;
+	border-radius: 8px;
+	background: var(--asrs-input-bg);
+	border: 1px solid var(--asrs-border);
+	margin: 14px 0 24px;
+}
+
+.asrs-recruit-wrapper .asrs-job-section {
+	margin-bottom: 22px;
+}
+
+.asrs-recruit-wrapper .asrs-job-section h3 {
+	margin: 0 0 8px;
+	font-size: 18px;
+	font-weight: 700;
+	color: var(--asrs-navy);
+}
+
+.asrs-recruit-wrapper .asrs-job-rich-text {
+	font-size: 15px;
+	line-height: 1.65;
+	color: #2f3f4c;
+}
+
+.asrs-recruit-wrapper .asrs-apply-card {
+	background: var(--asrs-surface);
+	border: 1.5px solid var(--asrs-border);
+	border-radius: var(--asrs-radius);
+	padding: 26px;
+	box-shadow: 0 10px 30px rgba(20, 35, 52, 0.05);
+}
+
+.asrs-recruit-wrapper .asrs-apply-heading {
+	margin: 0 0 4px;
+	font-size: 21px;
+	font-weight: 700;
+	color: var(--asrs-navy);
+}
+
+.asrs-recruit-wrapper .asrs-apply-subheading {
+	margin: 0 0 20px;
+	font-size: 13px;
+	color: var(--asrs-slate);
+}
+
+.asrs-recruit-wrapper .asrs-recruit-grid {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 14px;
+}
+
+.asrs-recruit-wrapper .asrs-field-full {
+	grid-column: 1 / -1;
+}
+
+.asrs-recruit-wrapper .asrs-recruit-label {
+	display: block;
+	margin-bottom: 6px;
+	font-size: 13px;
+	font-weight: 600;
+	color: var(--asrs-navy);
+}
+
+.asrs-recruit-wrapper .asrs-file-dropzone {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+	padding: 18px 14px;
+	border: 1.5px dashed #b9d2d2;
+	border-radius: 8px;
+	background: var(--asrs-input-bg);
+	cursor: pointer;
+	transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.asrs-recruit-wrapper .asrs-file-dropzone:hover {
+	border-color: var(--asrs-orange);
+	background: #ffffff;
+}
+
+.asrs-recruit-wrapper .asrs-file-input {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+}
+
+.asrs-recruit-wrapper .asrs-file-drop-title {
+	font-size: 14px;
+	font-weight: 600;
+	color: var(--asrs-navy);
+}
+
+.asrs-recruit-wrapper .asrs-file-drop-hint {
+	font-size: 12px;
+	color: var(--asrs-slate);
+	margin-top: 4px;
+}
+
+.asrs-recruit-wrapper .asrs-field-error {
+	margin-top: 5px;
+	font-size: 12px;
+	color: #b91c1c;
+	min-height: 16px;
+}
+
+.asrs-recruit-wrapper .asrs-hp-field {
+	position: absolute;
+	left: -9999px;
+	opacity: 0;
+	pointer-events: none;
+}
+
+.asrs-recruit-wrapper .asrs-form-feedback {
+	margin: 12px 0;
+	padding: 12px 14px;
+	border-radius: 8px;
+	font-size: 14px;
+	font-weight: 500;
+}
+
+.asrs-recruit-wrapper .asrs-form-feedback.is-success {
+	background: #ecfdf5;
+	border: 1px solid #a7f3d0;
+	color: #065f46;
+}
+
+.asrs-recruit-wrapper .asrs-form-feedback.is-error {
+	background: #fef2f2;
+	border: 1px solid #fecaca;
+	color: #991b1b;
+}
+
+.asrs-recruit-wrapper .asrs-form-actions {
+	margin-top: 14px;
+}
+
+.asrs-recruit-wrapper .asrs-recruit-submit {
+	width: 100%;
+	height: 48px;
+	font-size: 15px;
+}
+
+.asrs-recruit-wrapper .asrs-recruit-empty {
+	padding: 28px;
+	border-radius: var(--asrs-radius);
+	background: var(--asrs-input-bg);
+	border: 1px solid var(--asrs-border);
+	text-align: center;
+	color: var(--asrs-slate);
+	margin-bottom: 24px;
+}
+
+@media (max-width: 960px) {
+	.asrs-recruit-wrapper .asrs-recruit-filters,
+	.asrs-recruit-wrapper .asrs-recruit-detail-layout {
+		grid-template-columns: 1fr;
+	}
+}
+
+@media (max-width: 680px) {
+	.asrs-recruit-wrapper .asrs-jobs-grid,
+	.asrs-recruit-wrapper .asrs-recruit-grid {
+		grid-template-columns: 1fr;
+	}
+}
