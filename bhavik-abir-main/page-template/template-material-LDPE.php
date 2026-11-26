@@ -303,7 +303,6 @@ get_header();
                     <h3>Submit an LDPE requirement</h3>
                     <p>Complete what you know. Your enquiry is emailed to the site administrator address configured in WordPress.</p>
                     <?php echo do_shortcode( '[asrs_form id="contact-product-enquiry" show_title="false" class="ab-theme-product-form"]' ); ?>
-                    <p class="ab-form-small">Required fields are checked before submission. Confirm source, grade, documentation, pack size, minimum order quantity, current availability and delivery timing for each request.</p>
                 </div>
             </div>
         </section>
