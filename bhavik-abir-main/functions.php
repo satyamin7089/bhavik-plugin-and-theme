@@ -1454,33 +1454,3 @@ add_action('admin_bar_menu', function ($wp_admin_bar) {
     ]);
 
 }, 100);
-
-
-
-
-/**
- * ASRS Forms Engine integration (Contact / Support).
- *
- * Keeps the theme's original form foot: the "secure note" sits beside the
- * plugin submit button exactly like the old theme form. Uses the plugin's
- * public `asrs_forms_rendered_html` filter — markup only, no behaviour change.
- */
-add_filter( 'asrs_forms_rendered_html', function ( $html, $form = null, $atts = array() ) {
-    $class = is_array( $atts ) && isset( $atts['class'] ) ? (string) $atts['class'] : '';
-    if ( false === strpos( $class, 'ab-theme-contact-form' ) ) {
-        return $html;
-    }
-
-    $actions = strpos( $html, 'asrs-form-actions' );
-    $btn_end = false !== $actions ? strpos( $html, '</button>', $actions ) : false;
-    if ( false === $btn_end ) {
-        return $html;
-    }
-
-    $note = ' <span class="ab-contact-secure-note"><span aria-hidden="true">✓</span> '
-        . esc_html( 'Your details are used to respond to your enquiry.' )
-        . '</span>';
-
-    $btn_end += strlen( '</button>' );
-    return substr( $html, 0, $btn_end ) . $note . substr( $html, $btn_end );
-}, 10, 3 );

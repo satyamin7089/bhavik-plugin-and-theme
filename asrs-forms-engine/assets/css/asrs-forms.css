@@ -348,11 +348,6 @@
 	line-height: 1;
 }
 
-/* Theme secure note injected beside the button on Contact / Support. */
-.asrs-form-wrapper .asrs-form-actions .ab-contact-secure-note {
-	vertical-align: baseline;
-}
-
 @media (max-width: 767px) {
 	.asrs-form-wrapper .asrs-form .asrs-input,
 	.asrs-form-wrapper .asrs-form input.asrs-input,
@@ -380,10 +375,6 @@
 
 	.asrs-form-wrapper .asrs-form-actions {
 		align-items: flex-start;
-	}
-
-	.asrs-form-wrapper .asrs-form-actions .ab-contact-secure-note {
-		max-width: none;
 	}
 }
 
