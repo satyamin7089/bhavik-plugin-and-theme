@@ -299,100 +299,12 @@ get_header();
                             destination</span><span>Datasheet
                             &amp; documents</span></div>
                 </div>
-                <form class="ab-product-form ab-reveal ab-reveal-delay-1" id="hdpe-enquiry-form" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" method="post" enctype="multipart/form-data" novalidate>
-                <input type="hidden" name="action" value="ab_material_enquiry"><input type="hidden" name="enquiry_kind" value="ldpe"><?php wp_nonce_field( 'ab_material_enquiry', 'ab_material_enquiry_nonce' ); ?><label class="ab-honeypot" aria-hidden="true">Leave this field empty<input type="text" name="ab_website" tabindex="-1" autocomplete="off"></label>
+                <div class="ab-product-form ab-reveal ab-reveal-delay-1" id="datasheet-upload">
                     <h3>Submit an LDPE requirement</h3>
-                    <p>Complete what you know. Your enquiry is emailed to the site administrator address configured in WordPress. Optional attachments are checked before sending.</p>
-                    <div class="ab-product-form-grid">
-                        <div class="ab-product-field"><label for="hdpe-name">Name *</label><input id="hdpe-name"
-                                name="name" autocomplete="name" required placeholder="Your name"></div>
-                        <div class="ab-product-field"><label for="hdpe-email">Business email *</label><input
-                                id="hdpe-email" name="email" type="email" autocomplete="email" required
-                                placeholder="name@company.com"></div>
-                        <div class="ab-product-field"><label for="hdpe-material-type">Supply type</label><select
-                                id="hdpe-material-type" name="material_type">
-                                <option value="">Select supply type</option>
-                                <option>Prime / Virgin</option>
-                                <option>Off-grade</option>
-                                <option>Recycled</option>
-                                <option>Scrap / Regrind</option>
-                                <option>Not sure</option>
-                            </select></div>
-                        <div class="ab-product-field"><label for="hdpe-process">Processing method</label><select
-                                id="hdpe-process" name="processing_method">
-                                <option value="">Select if known</option>
-                                <option>Film extrusion</option>
-                                <option>Extrusion</option>
-                                <option>Coating</option>
-                                <option>Injection molding</option>
-                                <option>Other</option>
-                                <option>Not sure</option>
-                            </select></div>
-                        <div class="ab-product-field"><label for="hdpe-manufacturer">Manufacturer (if
-                                known)</label><input id="hdpe-manufacturer" name="manufacturer"
-                                placeholder="Manufacturer or source"></div>
-                        <div class="ab-product-field"><label for="hdpe-grade">Grade or specification</label><input
-                                id="hdpe-grade" name="grade" placeholder="Grade name or target specification"></div>
-                        <div class="ab-product-field"><label for="hdpe-form">Required form</label><select id="hdpe-form"
-                                name="form">
-                                <option value="">Select if known</option>
-                                <option>Granules</option>
-                                <option>Powder</option>
-                                <option>Compound</option>
-                                <option>Film-grade</option>
-                                <option>Extrusion-grade</option>
-                                <option>Other</option>
-                                <option>Not sure</option>
-                            </select></div>
-                        <div class="ab-product-field"><label for="hdpe-color">Color</label><input id="hdpe-color"
-                                name="color" placeholder="Color requirement"></div>
-                        <div class="ab-product-field"><label for="hdpe-quantity">Quantity and unit</label><input
-                                id="hdpe-quantity" name="quantity" placeholder="e.g. 5 metric tonnes"></div>
-                        <div class="ab-product-field"><label for="hdpe-destination">Destination</label><input
-                                id="hdpe-destination" name="destination" autocomplete="shipping country"
-                                placeholder="Country and port / city"></div>
-                        <div class="ab-product-field ab-product-field--full"><label for="hdpe-requirement">Application
-                                and required
-                                properties</label><textarea id="hdpe-requirement" name="requirement" required
-                                placeholder="Describe the end application, technical requirements, and performance needs"></textarea>
-                        </div>
-                        <div class="ab-product-field ab-product-field--full" id="datasheet-upload"><label
-                                for="hdpe-datasheet">Upload a technical datasheet (optional)</label><input
-                                id="hdpe-datasheet" name="datasheet" type="file"
-                                accept=".pdf,.doc,.docx,.xls,.xlsx,.csv,.jpg,.jpeg,.png"><span
-                                class="ab-field-help">Choose a current datasheet or target specification. It is attached to the enquiry email after file-type and size checks.</span></div>
-                    </div>
-                    <details class="ab-enquiry-details">
-                        <summary>More technical &amp; commercial details (optional)</summary>
-                        <div class="ab-product-form-grid ab-details-grid">
-                            <div class="ab-product-field"><label for="hdpe-pack-size">Pack size /
-                                    packaging</label><input id="hdpe-pack-size" name="pack_size"
-                                    placeholder="e.g. bag or bulk requirement"></div>
-                            <div class="ab-product-field"><label for="hdpe-frequency">Requirement
-                                    frequency</label><select id="hdpe-frequency" name="frequency">
-                                    <option value="">Select if known</option>
-                                    <option>One-time</option>
-                                    <option>Monthly</option>
-                                    <option>Regular</option>
-                                </select></div>
-                            <div class="ab-product-field"><label for="hdpe-delivery-date">Required delivery
-                                    date</label><input id="hdpe-delivery-date" name="delivery_date" type="date"></div>
-                            <div class="ab-product-field"><label for="hdpe-documents">Required
-                                    documentation</label><input id="hdpe-documents" name="documents"
-                                    placeholder="List any required documents"></div>
-                            <div class="ab-product-field ab-product-field--full"><label for="hdpe-notes">Additional
-                                    notes</label><textarea id="hdpe-notes" name="notes"
-                                    placeholder="Anything else to help review the requirement"></textarea></div>
-                        </div>
-                    </details>
-                    <div class="ab-product-form-foot"><button class="ab-btn ab-btn--blue" type="submit">Review LDPE
-                            requirement
-                            <svg class="ab-icon" aria-hidden="true">
-                                <use href="#ab-icon-arrow" />
-                            </svg></button><span class="ab-product-status" id="hdpe-form-status" role="status"
-                            aria-live="polite"></span></div>
+                    <p>Complete what you know. Your enquiry is emailed to the site administrator address configured in WordPress.</p>
+                    <?php echo do_shortcode( '[asrs_form id="contact-product-enquiry" show_title="false" class="ab-theme-product-form"]' ); ?>
                     <p class="ab-form-small">Required fields are checked before submission. Confirm source, grade, documentation, pack size, minimum order quantity, current availability and delivery timing for each request.</p>
-                </form>
+                </div>
             </div>
         </section>
         <!-- 6. Applications -->

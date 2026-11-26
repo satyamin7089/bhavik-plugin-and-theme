@@ -32,6 +32,11 @@ class Settings {
 			'turnstile_enabled'        => false,
 			'turnstile_site_key'       => '',
 			'turnstile_secret_key'     => '',
+			'recaptcha_enabled'        => false,
+			'recaptcha_version'        => 'v2',
+			'recaptcha_site_key'       => '',
+			'recaptcha_secret_key'     => '',
+			'recaptcha_min_score'      => 0.5,
 			'max_resume_mb'            => 5,
 			'only_published_jobs'      => false,
 			'allowed_job_statuses'     => 'In-progress, Waiting for approval, Open',
@@ -75,6 +80,9 @@ class Settings {
 		if ( ! empty( $merged['turnstile_secret_key'] ) ) {
 			$merged['turnstile_secret_key'] = Crypto::decrypt( (string) $merged['turnstile_secret_key'] );
 		}
+		if ( ! empty( $merged['recaptcha_secret_key'] ) ) {
+			$merged['recaptcha_secret_key'] = Crypto::decrypt( (string) $merged['recaptcha_secret_key'] );
+		}
 
 		return $merged;
 	}
@@ -105,6 +113,18 @@ class Settings {
 		return ! empty( $all['turnstile_enabled'] ) && '' !== (string) $all['turnstile_site_key'] && '' !== (string) $all['turnstile_secret_key'];
 	}
 
+	public function is_recaptcha_enabled(): bool {
+		$all = $this->get_all_general();
+		return ! empty( $all['recaptcha_enabled'] ) && '' !== trim( (string) $all['recaptcha_site_key'] ) && '' !== (string) $all['recaptcha_secret_key'];
+	}
+
+	/**
+	 * Configured reCAPTCHA version: 'v2' (checkbox) or 'v3' (invisible score).
+	 */
+	public function get_recaptcha_version(): string {
+		return 'v3' === (string) $this->get( 'recaptcha_version', 'v2' ) ? 'v3' : 'v2';
+	}
+
 	/**
 	 * @param array<string, mixed> $input Raw POST array.
 	 * @return array<string, mixed>
@@ -123,6 +143,14 @@ class Settings {
 				(string) ( $input['turnstile_secret_key'] ?? '' ),
 				(string) $current['turnstile_secret_key']
 			),
+			'recaptcha_enabled'        => array_key_exists( 'recaptcha_enabled', $input ) ? ! empty( $input['recaptcha_enabled'] ) : (bool) $current['recaptcha_enabled'],
+			'recaptcha_version'        => 'v3' === (string) ( $input['recaptcha_version'] ?? $current['recaptcha_version'] ) ? 'v3' : 'v2',
+			'recaptcha_site_key'       => sanitize_text_field( (string) ( $input['recaptcha_site_key'] ?? $current['recaptcha_site_key'] ) ),
+			'recaptcha_secret_key'     => $this->resolve_secret(
+				(string) ( $input['recaptcha_secret_key'] ?? '' ),
+				(string) $current['recaptcha_secret_key']
+			),
+			'recaptcha_min_score'      => round( max( 0.0, min( 1.0, (float) ( $input['recaptcha_min_score'] ?? $current['recaptcha_min_score'] ) ) ), 2 ),
 			'max_resume_mb'            => max( 1, min( 20, (int) ( $input['max_resume_mb'] ?? 5 ) ) ),
 			'only_published_jobs'      => ! empty( $input['only_published_jobs'] ),
 			'allowed_job_statuses'     => sanitize_text_field( (string) ( $input['allowed_job_statuses'] ?? '' ) ),
@@ -136,6 +164,9 @@ class Settings {
 		$stored = $clean;
 		if ( '' !== $stored['turnstile_secret_key'] ) {
 			$stored['turnstile_secret_key'] = Crypto::encrypt( $stored['turnstile_secret_key'] );
+		}
+		if ( '' !== $stored['recaptcha_secret_key'] ) {
+			$stored['recaptcha_secret_key'] = Crypto::encrypt( $stored['recaptcha_secret_key'] );
 		}
 
 		update_option( self::OPTION_GENERAL, $stored, false );

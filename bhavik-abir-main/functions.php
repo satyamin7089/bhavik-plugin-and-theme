@@ -107,6 +107,9 @@ function ab_enqueue_assets() {
         } elseif ( in_array( $slug, array( 'privacy-policy', 'terms-and-conditions' ), true ) || in_array( $template, array( 'page-template/template-privacy-policy.php', 'page-template/template-terms-conditions.php', 'page-templates/template-privacy-policy.php', 'page-templates/template-terms-conditions.php' ), true ) ) {
             // Privacy Policy and Terms & Conditions share the simple legal layout.
             $styles = array( 'legal.css' );
+        } elseif ( 'careers' === $slug || in_array( $template, array( 'page-template/template-careers.php', 'page-templates/template-careers.php' ), true ) ) {
+            // Careers: shared banner + ASRS Recruit Engine portal surface.
+            $styles = array( 'careers.css' );
         } elseif ( ab_is_bhavik_page() ) {
             // The legacy /bhavik-enterprises/ route renders the same Bhavik home layout.
             $styles = array( 'bhavik.css', 'product-categories.css' );
@@ -1455,3 +1458,29 @@ add_action('admin_bar_menu', function ($wp_admin_bar) {
 
 
 
+/**
+ * ASRS Forms Engine integration (Contact / Support).
+ *
+ * Keeps the theme's original form foot: the "secure note" sits beside the
+ * plugin submit button exactly like the old theme form. Uses the plugin's
+ * public `asrs_forms_rendered_html` filter — markup only, no behaviour change.
+ */
+add_filter( 'asrs_forms_rendered_html', function ( $html, $form = null, $atts = array() ) {
+    $class = is_array( $atts ) && isset( $atts['class'] ) ? (string) $atts['class'] : '';
+    if ( false === strpos( $class, 'ab-theme-contact-form' ) ) {
+        return $html;
+    }
+
+    $actions = strpos( $html, 'asrs-form-actions' );
+    $btn_end = false !== $actions ? strpos( $html, '</button>', $actions ) : false;
+    if ( false === $btn_end ) {
+        return $html;
+    }
+
+    $note = ' <span class="ab-contact-secure-note"><span aria-hidden="true">✓</span> '
+        . esc_html( 'Your details are used to respond to your enquiry.' )
+        . '</span>';
+
+    $btn_end += strlen( '</button>' );
+    return substr( $html, 0, $btn_end ) . $note . substr( $html, $btn_end );
+}, 10, 3 );

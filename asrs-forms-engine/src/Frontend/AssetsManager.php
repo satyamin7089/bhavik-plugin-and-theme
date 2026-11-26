@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace ASRS\FormsEngine\Frontend;
 
+use ASRS\FormsEngine\Security\RecaptchaVerifier;
 use ASRS\FormsEngine\Security\TurnstileVerifier;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -18,10 +19,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 class AssetsManager {
 
 	private TurnstileVerifier $turnstile;
+	private ?RecaptchaVerifier $recaptcha;
 	private bool $enqueued = false;
 
-	public function __construct( TurnstileVerifier $turnstile ) {
+	public function __construct( TurnstileVerifier $turnstile, ?RecaptchaVerifier $recaptcha = null ) {
 		$this->turnstile = $turnstile;
+		$this->recaptcha = $recaptcha;
+	}
+
+	private function recaptcha_enabled(): bool {
+		return null !== $this->recaptcha && $this->recaptcha->is_enabled();
 	}
 
 	public function init(): void {
@@ -58,6 +65,16 @@ class AssetsManager {
 				true
 			);
 		}
+
+		if ( $this->recaptcha_enabled() && ! wp_script_is( 'google-recaptcha', 'registered' ) ) {
+			wp_register_script(
+				'google-recaptcha',
+				$this->recaptcha->get_script_url(),
+				array(),
+				null,
+				true
+			);
+		}
 	}
 
 	public function enqueue_on_demand(): void {
@@ -73,13 +90,25 @@ class AssetsManager {
 			wp_enqueue_script( 'cloudflare-turnstile' );
 		}
 
+		$recaptcha_config = array( 'enabled' => false );
+		if ( $this->recaptcha_enabled() ) {
+			wp_enqueue_script( 'google-recaptcha' );
+			$recaptcha_config = array(
+				'enabled' => true,
+				'version' => $this->recaptcha->get_version(),
+				'siteKey' => $this->recaptcha->get_site_key(),
+				'action'  => RecaptchaVerifier::ACTION,
+			);
+		}
+
 		wp_localize_script(
 			'asrs-forms-frontend',
 			'ASRSFormsConfig',
 			array(
 				'ajaxUrl' => admin_url( 'admin-ajax.php' ),
-				'nonce'   => wp_create_nonce( 'asrs_forms_frontend_nonce' ),
-				'i18n'    => array(
+				'nonce'     => wp_create_nonce( 'asrs_forms_frontend_nonce' ),
+				'recaptcha' => $recaptcha_config,
+				'i18n'      => array(
 					'genericError' => __( 'An unexpected error occurred. Please try again.', 'asrs-forms-engine' ),
 				),
 			)

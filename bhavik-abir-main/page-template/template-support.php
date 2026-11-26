@@ -144,49 +144,14 @@ $ab_support_phone_icon = '<path d="M7.1 3.8H4.8c-.8 0-1.4.7-1.3 1.5.7 7.9 7.1 14
                     <div class="ab-contact-aside-decoration" aria-hidden="true"><span></span><span></span><span></span></div>
                 </aside>
 
-                <form class="ab-form-card ab-contact-form" id="ab-contact-enquiry-form" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" method="post">
-                    <input type="hidden" name="action" value="ab_material_enquiry">
-                    <input type="hidden" name="enquiry_kind" value="general">
-                    <?php wp_nonce_field( 'ab_material_enquiry', 'ab_material_enquiry_nonce' ); ?>
-                    <label class="ab-honeypot" aria-hidden="true">Leave this field empty<input type="text" name="ab_website" tabindex="-1" autocomplete="off"></label>
-
+                <div class="ab-form-card ab-contact-form" id="ab-contact-enquiry-form">
                     <div class="ab-contact-form-heading">
                         <h3>Send us your enquiry</h3>
                         <p>Fields marked with an asterisk are required.</p>
                     </div>
-                    <div class="ab-form-grid">
-                        <div class="ab-field">
-                            <label for="support-name">Full name <span aria-hidden="true">*</span></label>
-                            <input id="support-name" name="name" type="text" autocomplete="name" required maxlength="120" placeholder="Your full name">
-                        </div>
-                        <div class="ab-field">
-                            <label for="support-email">Business email <span aria-hidden="true">*</span></label>
-                            <input id="support-email" name="email" type="email" autocomplete="email" required maxlength="254" placeholder="name@company.com">
-                        </div>
-                        <div class="ab-field">
-                            <label for="support-company">Company name</label>
-                            <input id="support-company" name="company" type="text" autocomplete="organization" maxlength="160" placeholder="Your company">
-                        </div>
-                        <div class="ab-field">
-                            <label for="support-topic">Enquiry type <span aria-hidden="true">*</span></label>
-                            <select id="support-topic" name="topic" required>
-                                <option value="">Choose a topic</option>
-                                <?php foreach ( $ab_support_topics as $ab_topic_option ) : ?>
-                                    <option value="<?php echo esc_attr( $ab_topic_option ); ?>"<?php selected( $ab_selected_topic, $ab_topic_option ); ?>><?php echo esc_html( $ab_topic_option ); ?></option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-                        <div class="ab-field ab-field--full">
-                            <label for="support-message">How can we help? <span aria-hidden="true">*</span></label>
-                            <textarea id="support-message" name="message" required maxlength="5000" rows="5" placeholder="Tell us about the material, grade, form, application, quantity, or timing you have in mind."></textarea>
-                        </div>
-                    </div>
-                    <div class="ab-form-foot">
-                        <button class="ab-btn ab-btn--blue ab-contact-submit" type="submit">Submit enquiry <span aria-hidden="true">↗</span></button>
-                        <span class="ab-contact-secure-note"><span aria-hidden="true">✓</span> Your details are used to respond to your enquiry.</span>
-                    </div>
+                    <?php echo do_shortcode( '[asrs_form id="contact-form" show_title="false" class="ab-theme-contact-form"]' ); ?>
                     <p class="ab-form-disclaimer">Your message is sent to the site administrator email configured in WordPress.</p>
-                </form>
+                </div>
             </div>
         </div>
     </section>

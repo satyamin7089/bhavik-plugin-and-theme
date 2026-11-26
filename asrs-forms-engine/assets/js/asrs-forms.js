@@ -104,6 +104,79 @@
 		}
 	}
 
+	/* ---- Google reCAPTCHA (optional, configured in ASRS Forms → Settings) ---- */
+	var recaptchaCfg = config.recaptcha || {};
+	var recaptchaOn = !!(recaptchaCfg.enabled && recaptchaCfg.siteKey);
+
+	function whenRecaptchaReady(cb, tries) {
+		tries = tries || 0;
+		if (window.grecaptcha && typeof window.grecaptcha.ready === 'function') {
+			window.grecaptcha.ready(cb);
+			return;
+		}
+		if (tries < 150) {
+			setTimeout(function () { whenRecaptchaReady(cb, tries + 1); }, 200);
+		}
+	}
+
+	function renderRecaptchaWidgets() {
+		if (!recaptchaOn || recaptchaCfg.version === 'v3') return;
+		whenRecaptchaReady(function () {
+			if (typeof window.grecaptcha.render !== 'function') return;
+			document.querySelectorAll('.asrs-form-wrapper .asrs-g-recaptcha').forEach(function (el) {
+				if (el.getAttribute('data-widget-id') !== null) return;
+				try {
+					var id = window.grecaptcha.render(el, { sitekey: el.getAttribute('data-sitekey') || recaptchaCfg.siteKey });
+					el.setAttribute('data-widget-id', String(id));
+				} catch (err) {}
+			});
+		});
+	}
+
+	function getRecaptchaWidgetId(formEl) {
+		var el = formEl.querySelector('.asrs-g-recaptcha');
+		if (!el) return null;
+		var id = el.getAttribute('data-widget-id');
+		return id === null ? null : parseInt(id, 10);
+	}
+
+	function getRecaptchaToken(formEl) {
+		if (!recaptchaOn) return Promise.resolve('');
+		if (recaptchaCfg.version === 'v3') {
+			return new Promise(function (resolve) {
+				if (!window.grecaptcha || typeof window.grecaptcha.ready !== 'function') {
+					resolve('');
+					return;
+				}
+				window.grecaptcha.ready(function () {
+					try {
+						window.grecaptcha.execute(recaptchaCfg.siteKey, { action: recaptchaCfg.action || 'asrs_form_submit' })
+							.then(function (token) { resolve(token || ''); }, function () { resolve(''); });
+					} catch (err) {
+						resolve('');
+					}
+				});
+			});
+		}
+		var widgetId = getRecaptchaWidgetId(formEl);
+		var token = '';
+		if (window.grecaptcha && widgetId !== null) {
+			try { token = window.grecaptcha.getResponse(widgetId) || ''; } catch (err) {}
+		}
+		if (!token) {
+			var field = formEl.querySelector('[name="g-recaptcha-response"]');
+			token = field ? field.value : '';
+		}
+		return Promise.resolve(token);
+	}
+
+	function resetRecaptcha(formEl) {
+		if (!recaptchaOn || recaptchaCfg.version === 'v3' || !window.grecaptcha) return;
+		var widgetId = getRecaptchaWidgetId(formEl);
+		if (widgetId === null) return;
+		try { window.grecaptcha.reset(widgetId); } catch (err) {}
+	}
+
 	function initWrapper(wrapper) {
 		var formId = wrapper.getAttribute('data-form-id');
 		var formEl = wrapper.querySelector('form.asrs-form');
@@ -143,7 +216,13 @@
 				fields: collectFields(formEl)
 			};
 
-			postAjax('asrs_submit_form', payload)
+			getRecaptchaToken(formEl)
+				.then(function (recaptchaToken) {
+					if (recaptchaOn) {
+						payload['g-recaptcha-response'] = recaptchaToken;
+					}
+					return postAjax('asrs_submit_form', payload);
+				})
 				.then(function (resp) {
 					if (resp && resp.success) {
 						setNotice(messagesEl, 'success', resp.data.message);
@@ -171,11 +250,13 @@
 							window.turnstile.reset();
 						} catch (err) {}
 					}
+					resetRecaptcha(formEl);
 				});
 		});
 	}
 
 	document.addEventListener('DOMContentLoaded', function () {
 		document.querySelectorAll('.asrs-form-wrapper').forEach(initWrapper);
+		renderRecaptchaWidgets();
 	});
 })();

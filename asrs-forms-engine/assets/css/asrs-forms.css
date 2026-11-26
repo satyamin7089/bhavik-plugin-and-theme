@@ -1,8 +1,16 @@
 /**
  * ASRS Forms Engine - Frontend Form Styles
- * Pixel-matched to user brand palette & 2-column responsive layout.
- * High-specificity selectors prevent WordPress theme CSS from overriding form controls.
+ *
+ * Visual system mirrors the Bhavik Enterprises (bhavik-abir-main) theme forms
+ * one-to-one: borderless inset ("pressed") fields, soft-depth surfaces, the
+ * orange gradient 3D action button and the theme type scale.
+ *
+ * - Base styles  = the theme Contact / Support enquiry form ("parity pass").
+ * - .ab-product-form scope = the theme material (LDPE) product enquiry form.
+ *
+ * Styling only — markup, classes and behaviour are unchanged.
  */
+
 .asrs-form-wrapper,
 .asrs-form-wrapper *,
 .asrs-form-wrapper *::before,
@@ -11,27 +19,47 @@
 }
 
 .asrs-form-wrapper {
+	--asrs-teal: #008080;
+	--asrs-ink: #142334;
+	--asrs-muted: #536572;
+	--asrs-orange: #f58220;
+	--asrs-field-bg: linear-gradient(145deg, #f5f9f8, #fbfdfc);
+	--asrs-field-shadow: inset 4px 4px 9px rgba(28, 56, 62, .075), inset -3px -3px 8px rgba(255, 255, 255, .96);
+	--asrs-btn-bg: linear-gradient(180deg, #ff9238 0%, #f58220 54%, #e26d0c 100%);
+	--asrs-btn-bg-hover: linear-gradient(180deg, #ff9d4b 0%, #ff8826 52%, #e87312 100%);
+	--asrs-btn-shadow: 0 2px 5px rgba(180, 82, 8, .10), 0 4px 10px rgba(245, 130, 32, .12), inset 0 1px 0 rgba(255, 255, 255, .28), inset 0 -2px 0 rgba(166, 72, 0, .16);
+	--asrs-btn-shadow-hover: 0 4px 8px rgba(180, 82, 8, .13), 0 8px 16px rgba(245, 130, 32, .16), inset 0 1px 0 rgba(255, 255, 255, .34), inset 0 -2px 0 rgba(150, 62, 0, .18);
+	--asrs-ease: cubic-bezier(.22, 1, .36, 1);
+
+	position: relative;
 	width: 100%;
-	max-width: 720px;
-	margin: 0 auto;
+	max-width: none;
+	margin: 0;
 	padding: 0;
 	background: transparent;
-	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-	color: #142334;
+	font-family: inherit;
+	color: inherit;
 	-webkit-font-smoothing: antialiased;
 }
 
+.asrs-form-wrapper .asrs-form {
+	margin: 0;
+	padding: 0;
+}
+
 .asrs-form-wrapper .asrs-form-title {
-	margin: 0 0 1.25rem;
-	font-size: 1.4rem;
+	margin: 0 0 7px;
+	color: var(--asrs-ink);
+	font-family: inherit;
+	font-size: 22px;
 	font-weight: 700;
-	line-height: 1.3;
-	color: #142334;
+	line-height: 1.12;
+	letter-spacing: -.025em;
 }
 
 .asrs-form-wrapper .asrs-hp-field {
 	position: absolute !important;
-	left: -9999px !important;
+	left: -10000px !important;
 	width: 1px !important;
 	height: 1px !important;
 	overflow: hidden !important;
@@ -39,15 +67,17 @@
 	pointer-events: none !important;
 }
 
-/* 2-Column Responsive Grid */
+/* Grid ------------------------------------------------------------------ */
 .asrs-form-wrapper .asrs-form-fields {
 	display: grid;
 	grid-template-columns: repeat(2, minmax(0, 1fr));
-	gap: 18px 18px;
+	gap: 15px;
 }
 
 .asrs-form-wrapper .asrs-field-group {
+	display: grid;
 	min-width: 0;
+	gap: 7px;
 	margin: 0;
 }
 
@@ -59,119 +89,124 @@
 	grid-column: 1 / -1;
 }
 
-/* Labels & Required Asterisk */
+/* Labels ---------------------------------------------------------------- */
 .asrs-form-wrapper .asrs-field-label {
 	display: block;
-	margin: 0 0 7px;
+	margin: 0;
+	color: #344953;
 	font-family: inherit;
 	font-size: 14px;
-	font-weight: 600;
-	line-height: 1.35;
-	color: #142334;
+	font-weight: 700;
+	line-height: 1.5;
+	letter-spacing: normal;
+	text-transform: none;
 }
 
 .asrs-form-wrapper .asrs-required {
-	color: #f68820;
-	font-weight: 700;
-	margin-left: 3px;
+	margin: 0;
+	color: var(--asrs-orange);
+	font-weight: inherit;
 }
 
-/* Inputs, Select & Textarea */
+/* Inputs, selects, textareas -------------------------------------------- */
 .asrs-form-wrapper .asrs-form .asrs-input,
 .asrs-form-wrapper .asrs-form input.asrs-input,
 .asrs-form-wrapper .asrs-form select.asrs-input,
 .asrs-form-wrapper .asrs-form textarea.asrs-input {
 	display: block;
 	width: 100%;
+	min-width: 0;
+	max-width: 100%;
 	height: auto;
+	min-height: 48px;
 	margin: 0;
-	padding: 12px 15px;
-	font-family: inherit;
-	font-size: 14.5px;
-	font-weight: 400;
-	line-height: 1.45;
-	color: #142334;
-	background-color: #f2f7f6;
-	border: 1.5px solid #e8eded;
+	padding: 12px 13px;
+	border: 0;
 	border-radius: 10px;
-	box-shadow: inset 0 1px 2px rgba(20, 35, 52, 0.03);
-	transition: background-color 0.16s ease, border-color 0.16s ease, box-shadow 0.16s ease;
+	background: var(--asrs-field-bg);
+	color: var(--asrs-ink);
+	font-family: inherit;
+	font-size: 17px;
+	font-weight: 400;
+	line-height: 1.5;
+	letter-spacing: normal;
+	box-shadow: var(--asrs-field-shadow);
+	transition: box-shadow .2s ease, background .2s ease;
 }
 
 .asrs-form-wrapper .asrs-form .asrs-input::placeholder {
-	color: #667584;
+	color: #8b9ba1;
 	opacity: 1;
 }
 
-.asrs-form-wrapper .asrs-form .asrs-input:hover:not(:focus) {
-	border-color: #d7e3e2;
-}
-
 .asrs-form-wrapper .asrs-form .asrs-input:focus {
-	outline: none;
-	background-color: #ffffff;
-	border-color: #9ec9c9;
-	box-shadow: 0 0 0 3px rgba(180, 216, 216, 0.45);
+	background: #fff;
+	box-shadow: 0 0 0 3px rgba(0, 128, 128, .13), 0 5px 14px rgba(22, 44, 62, .06);
 }
 
-.asrs-form-wrapper .asrs-field-group.has-error .asrs-input {
-	background-color: #ffffff;
-	border-color: #dc2626;
-	box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.12);
+.asrs-form-wrapper .asrs-form .asrs-input:focus-visible {
+	outline: 3px solid rgba(0, 128, 128, .28);
+	outline-offset: 3px;
 }
 
-/* Select Dropdown */
+.asrs-form-wrapper .asrs-field-group.has-error .asrs-input,
+.asrs-form-wrapper .asrs-field-group.has-error .asrs-input:focus {
+	background: #fff;
+	box-shadow: 0 0 0 3px rgba(162, 60, 46, .16), inset 4px 4px 9px rgba(28, 56, 62, .05);
+}
+
+/* Select: the theme keeps the native control (arrow) on the soft field. */
 .asrs-form-wrapper .asrs-select-wrap {
 	position: relative;
 	width: 100%;
+	min-width: 0;
 }
 
 .asrs-form-wrapper .asrs-form select.asrs-select {
-	appearance: none;
-	-webkit-appearance: none;
-	-moz-appearance: none;
-	padding-right: 40px;
-	cursor: pointer;
-	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 20 20' fill='none'%3E%3Cpath d='M5 7.5L10 12.5L15 7.5' stroke='%23142334' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-	background-repeat: no-repeat;
-	background-position: right 14px center;
-	background-size: 14px 14px;
+	appearance: auto;
+	-webkit-appearance: auto;
+	-moz-appearance: auto;
+	padding-right: 13px;
+	background: var(--asrs-field-bg);
+	line-height: normal;
+	cursor: default;
+}
+
+.asrs-form-wrapper .asrs-form select.asrs-select:focus {
+	background: #fff;
 }
 
 .asrs-form-wrapper .asrs-form select.asrs-select option {
-	color: #142334;
-	background: #ffffff;
+	color: var(--asrs-ink);
+	background: #fff;
 }
 
-/* Textarea */
 .asrs-form-wrapper .asrs-form textarea.asrs-textarea {
+	min-height: 100px;
 	resize: vertical;
-	min-height: 142px;
-	line-height: 1.5;
-	font-family: inherit;
 }
 
-/* Help & Field Errors */
+/* Help & errors ---------------------------------------------------------- */
 .asrs-form-wrapper .asrs-field-help {
-	margin: 6px 0 0;
-	font-size: 12.5px;
-	line-height: 1.4;
-	color: #667584;
+	margin: 0;
+	color: #738187;
+	font-size: 13px;
+	line-height: 1.5;
 }
 
 .asrs-form-wrapper .asrs-field-error {
-	margin-top: 6px;
+	margin: 0;
+	color: #a23c2e;
 	font-size: 13px;
-	font-weight: 500;
-	line-height: 1.35;
-	color: #dc2626;
+	font-weight: 600;
+	line-height: 1.45;
 }
 
 .asrs-form-wrapper .asrs-field-error:empty {
 	display: none;
 }
 
-/* Radio & Checkbox */
+/* Radio & checkbox -------------------------------------------------------- */
 .asrs-form-wrapper .asrs-radio-group {
 	display: flex;
 	flex-direction: column;
@@ -183,50 +218,75 @@
 	display: flex;
 	align-items: center;
 	gap: 8px;
+	color: #344953;
 	font-size: 14px;
-	color: #142334;
+	line-height: 1.5;
 	cursor: pointer;
 }
 
-.asrs-form-wrapper .asrs-turnstile-group {
-	margin-top: 18px;
+.asrs-form-wrapper .asrs-radio-option input,
+.asrs-form-wrapper .asrs-checkbox-option input {
+	accent-color: var(--asrs-teal);
 }
 
-/* Messages */
+/* Bot protection widgets (Turnstile / reCAPTCHA) ------------------------- */
+.asrs-form-wrapper .asrs-turnstile-group,
+.asrs-form-wrapper .asrs-recaptcha-group {
+	margin-top: 17px;
+	min-width: 0;
+}
+
+.asrs-form-wrapper .asrs-recaptcha-group .asrs-g-recaptcha {
+	max-width: 100%;
+	min-height: 78px;
+}
+
+/* Google's v2 widget is a fixed 304px iframe; scale it on very narrow cards. */
+@media (max-width: 380px) {
+	.asrs-form-wrapper .asrs-recaptcha-group .asrs-g-recaptcha {
+		transform: scale(0.88);
+		transform-origin: 0 0;
+		min-height: 69px;
+		height: 69px;
+	}
+}
+
+/* Messages ---------------------------------------------------------------- */
 .asrs-form-wrapper .asrs-form-messages:empty {
 	display: none;
 }
 
 .asrs-form-wrapper .asrs-form-messages {
-	margin-top: 18px;
+	margin-top: 17px;
 }
 
 .asrs-form-wrapper .asrs-form-messages > div {
-	padding: 12px 15px;
+	padding: 12px 14px;
+	border: 0;
 	border-radius: 10px;
 	font-size: 14px;
-	font-weight: 500;
-	line-height: 1.45;
+	font-weight: 600;
+	line-height: 1.5;
 }
 
 .asrs-form-wrapper .asrs-notice-success {
-	background: #ecfdf5;
-	border: 1px solid #a7f3d0;
-	color: #065f46;
+	background: linear-gradient(145deg, #e3f4ed, #f1faf6);
+	color: #247a5c;
+	box-shadow: inset 0 1px 0 rgba(255, 255, 255, .9), 0 4px 12px rgba(36, 122, 92, .08);
 }
 
 .asrs-form-wrapper .asrs-notice-error {
-	background: #fef2f2;
-	border: 1px solid #fecaca;
-	color: #991b1b;
+	background: linear-gradient(145deg, #fbeeeb, #fdf6f4);
+	color: #a23c2e;
+	box-shadow: inset 0 1px 0 rgba(255, 255, 255, .9), 0 4px 12px rgba(162, 60, 46, .08);
 }
 
-/* Submit Action Button */
+/* Actions & submit button -------------------------------------------------- */
 .asrs-form-wrapper .asrs-form-actions {
-	display: flex;
-	flex-wrap: wrap;
+	display: block;
 	align-items: center;
-	margin-top: 22px;
+	gap: 16px;
+	margin-top: 17px;
 }
 
 .asrs-form-wrapper .asrs-form button.asrs-btn,
@@ -236,30 +296,30 @@
 	justify-content: center;
 	gap: 10px;
 	width: auto;
-	padding: 13px 26px;
+	min-height: 52px;
+	margin: 0;
+	padding: 13px 22px;
+	border: 0 !important;
+	border-radius: 14px;
+	background: var(--asrs-btn-bg);
+	color: #fff !important;
 	font-family: inherit;
-	font-size: 14px;
+	font-size: 16px;
 	font-weight: 700;
 	line-height: 1.2;
-	letter-spacing: 0.04em;
-	text-transform: uppercase;
+	letter-spacing: normal;
+	text-transform: none;
 	text-decoration: none;
-	border-radius: 10px;
-	border: none;
+	box-shadow: var(--asrs-btn-shadow);
 	cursor: pointer;
-	background: linear-gradient(180deg, #ff9137 0%, #e46f0e 100%);
-	background-color: #f68820;
-	color: #ffffff;
-	box-shadow: 0 5px 14px -3px rgba(228, 111, 14, 0.42);
-	transition: background 0.16s ease, transform 0.16s ease, box-shadow 0.16s ease, opacity 0.16s ease;
+	transition: transform .24s var(--asrs-ease), box-shadow .24s var(--asrs-ease), background .24s ease, opacity .2s ease;
 }
 
 .asrs-form-wrapper .asrs-form button.asrs-btn-primary:hover:not(:disabled) {
-	background: linear-gradient(180deg, #fa8424 0%, #d46208 100%);
-	background-color: #e46f0e;
-	color: #ffffff;
-	box-shadow: 0 7px 18px -3px rgba(212, 98, 8, 0.48);
-	transform: translateY(-1px);
+	transform: translateY(-2px);
+	background: var(--asrs-btn-bg-hover);
+	color: #fff !important;
+	box-shadow: var(--asrs-btn-shadow-hover);
 }
 
 .asrs-form-wrapper .asrs-form button.asrs-btn-primary:active:not(:disabled) {
@@ -267,46 +327,44 @@
 }
 
 .asrs-form-wrapper .asrs-form button.asrs-btn-primary:focus-visible {
-	outline: none;
-	box-shadow: 0 0 0 3px rgba(246, 136, 32, 0.35), 0 5px 14px -3px rgba(228, 111, 14, 0.42);
+	outline: 3px solid rgba(0, 128, 128, .28);
+	outline-offset: 3px;
 }
 
 .asrs-form-wrapper .asrs-form button.asrs-btn:disabled {
-	opacity: 0.65;
+	opacity: .65;
 	cursor: not-allowed;
 	transform: none;
 }
 
+/* Contact parity: the theme button ends in an 18px "↗" glyph. */
 .asrs-form-wrapper .asrs-btn-arrow {
-	width: 17px;
-	height: 17px;
-	flex-shrink: 0;
-	display: inline-block;
-	transition: transform 0.16s ease;
+	display: none;
 }
 
-.asrs-form-wrapper .asrs-form button.asrs-btn-primary:hover:not(:disabled) .asrs-btn-arrow {
-	transform: translateX(3px);
+.asrs-form-wrapper .asrs-form button.asrs-submit-btn::after {
+	content: "\2197";
+	font-size: 18px;
+	line-height: 1;
 }
 
-/* Tablet Breakpoint */
-@media (max-width: 768px) {
-	.asrs-form-wrapper .asrs-form-fields {
-		gap: 16px 14px;
-	}
+/* Theme secure note injected beside the button on Contact / Support. */
+.asrs-form-wrapper .asrs-form-actions .ab-contact-secure-note {
+	vertical-align: baseline;
+}
 
+@media (max-width: 767px) {
 	.asrs-form-wrapper .asrs-form .asrs-input,
 	.asrs-form-wrapper .asrs-form input.asrs-input,
 	.asrs-form-wrapper .asrs-form select.asrs-input,
 	.asrs-form-wrapper .asrs-form textarea.asrs-input {
-		padding: 11px 14px;
+		font-size: 16px;
 	}
 }
 
-/* Mobile Breakpoint */
-@media (max-width: 640px) {
+@media (max-width: 760px) {
 	.asrs-form-wrapper .asrs-form-fields {
-		grid-template-columns: 1fr;
+		grid-template-columns: minmax(0, 1fr);
 		gap: 15px;
 	}
 
@@ -315,30 +373,185 @@
 		grid-column: 1 / -1;
 	}
 
-	/* 16px font prevents iOS Safari automatic zoom on input focus */
-	.asrs-form-wrapper .asrs-form .asrs-input,
-	.asrs-form-wrapper .asrs-form input.asrs-input,
-	.asrs-form-wrapper .asrs-form select.asrs-input,
-	.asrs-form-wrapper .asrs-form textarea.asrs-input {
-		font-size: 16px;
-		padding: 12px 14px;
-	}
-
-	.asrs-form-wrapper .asrs-form select.asrs-select {
-		padding-right: 40px;
-	}
-
-	.asrs-form-wrapper .asrs-form textarea.asrs-textarea {
-		min-height: 128px;
-	}
-
-	.asrs-form-wrapper .asrs-form-actions {
-		margin-top: 18px;
-	}
-
 	.asrs-form-wrapper .asrs-form button.asrs-btn,
 	.asrs-form-wrapper .asrs-form button.asrs-btn-primary {
 		width: 100%;
-		padding: 14px 20px;
+	}
+
+	.asrs-form-wrapper .asrs-form-actions {
+		align-items: flex-start;
+	}
+
+	.asrs-form-wrapper .asrs-form-actions .ab-contact-secure-note {
+		max-width: none;
+	}
+}
+
+/* ==========================================================================
+   Theme material page product enquiry (.ab-product-form) — LDPE parity
+   ========================================================================== */
+.ab-product-form .asrs-form-wrapper .asrs-form-fields {
+	grid-template-columns: 1fr 1fr;
+	gap: 11px;
+}
+
+.ab-product-form .asrs-form-wrapper .asrs-field-group {
+	gap: 6px;
+}
+
+.ab-product-form .asrs-form-wrapper .asrs-field-label {
+	color: #3e5059;
+	font-size: 17px;
+	font-weight: 700;
+	line-height: inherit;
+}
+
+.ab-product-form .asrs-form-wrapper .asrs-required {
+	color: inherit;
+}
+
+.ab-product-form .asrs-form-wrapper .asrs-form .asrs-input,
+.ab-product-form .asrs-form-wrapper .asrs-form input.asrs-input,
+.ab-product-form .asrs-form-wrapper .asrs-form select.asrs-input,
+.ab-product-form .asrs-form-wrapper .asrs-form textarea.asrs-input {
+	min-height: 43px;
+	padding: 10px 11px;
+	border-radius: 9px;
+	font-size: 17px;
+	line-height: inherit;
+}
+
+.ab-product-form .asrs-form-wrapper .asrs-form select.asrs-select {
+	padding-right: 11px;
+	line-height: normal;
+}
+
+.ab-product-form .asrs-form-wrapper .asrs-form .asrs-input::placeholder {
+	color: #757575;
+}
+
+.ab-product-form .asrs-form-wrapper .asrs-form .asrs-input:focus,
+.ab-product-form .asrs-form-wrapper .asrs-form select.asrs-select:focus {
+	background: var(--asrs-field-bg);
+	box-shadow: var(--asrs-field-shadow);
+}
+
+.ab-product-form .asrs-form-wrapper .asrs-form .asrs-input:focus-visible {
+	outline: 3px solid rgba(245, 130, 32, .78);
+	outline-offset: 2px;
+}
+
+.ab-product-form .asrs-form-wrapper .asrs-field-group.has-error .asrs-input,
+.ab-product-form .asrs-form-wrapper .asrs-field-group.has-error .asrs-input:focus {
+	background: #fff;
+	box-shadow: 0 0 0 3px rgba(162, 60, 46, .16), inset 4px 4px 9px rgba(28, 56, 62, .05);
+}
+
+/* Theme product textarea is a compact two-line field. */
+.ab-product-form .asrs-form-wrapper .asrs-form textarea.asrs-textarea {
+	min-height: 75px;
+	height: calc(3.36em + 20px);
+	height: calc(2lh + 20px);
+}
+
+.ab-product-form .asrs-form-wrapper .asrs-field-help,
+.ab-product-form .asrs-form-wrapper .asrs-field-error {
+	font-size: 15px;
+	line-height: 1.4;
+}
+
+.ab-product-form .asrs-form-wrapper .asrs-turnstile-group,
+.ab-product-form .asrs-form-wrapper .asrs-recaptcha-group,
+.ab-product-form .asrs-form-wrapper .asrs-form-messages {
+	margin-top: 14px;
+}
+
+.ab-product-form .asrs-form-wrapper .asrs-form-messages > div {
+	font-size: 16px;
+}
+
+.ab-product-form .asrs-form-wrapper .asrs-form-actions {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 12px;
+	margin-top: 14px;
+}
+
+.ab-product-form .asrs-form-wrapper .asrs-form button.asrs-btn,
+.ab-product-form .asrs-form-wrapper .asrs-form button.asrs-btn-primary {
+	width: auto;
+	min-height: 45px;
+	padding: 11px 15px;
+	border-radius: 14px;
+	font-size: 16px;
+}
+
+.ab-product-form .asrs-form-wrapper .asrs-form button.asrs-btn-primary:focus-visible {
+	outline: 3px solid rgba(245, 130, 32, .72);
+	outline-offset: 3px;
+}
+
+/* Product parity: the theme button ends in the 17px stroked arrow icon. */
+.ab-product-form .asrs-form-wrapper .asrs-form button.asrs-submit-btn::after {
+	content: none;
+}
+
+.ab-product-form .asrs-form-wrapper .asrs-btn-arrow {
+	display: block;
+	width: 17px;
+	height: 17px;
+	flex: none;
+}
+
+.ab-product-form .asrs-form-wrapper .asrs-btn-arrow path {
+	stroke-width: 1.42;
+}
+
+@media (max-width: 767px) {
+	.ab-product-form .asrs-form-wrapper .asrs-form .asrs-input,
+	.ab-product-form .asrs-form-wrapper .asrs-form input.asrs-input,
+	.ab-product-form .asrs-form-wrapper .asrs-form select.asrs-input,
+	.ab-product-form .asrs-form-wrapper .asrs-form textarea.asrs-input {
+		font-size: 17px;
+	}
+}
+
+@media (max-width: 760px) {
+	.ab-product-form .asrs-form-wrapper .asrs-form-fields {
+		grid-template-columns: 1fr 1fr;
+		gap: 11px;
+	}
+
+	.ab-product-form .asrs-form-wrapper .asrs-width-half {
+		grid-column: span 1;
+	}
+
+	.ab-product-form .asrs-form-wrapper .asrs-form button.asrs-btn,
+	.ab-product-form .asrs-form-wrapper .asrs-form button.asrs-btn-primary {
+		width: auto;
+	}
+}
+
+@media (max-width: 600px) {
+	.ab-product-form .asrs-form-wrapper .asrs-form-fields {
+		grid-template-columns: 1fr;
+		gap: 10px;
+	}
+
+	.ab-product-form .asrs-form-wrapper .asrs-width-half,
+	.ab-product-form .asrs-form-wrapper .asrs-width-full {
+		grid-column: auto;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.asrs-form-wrapper .asrs-form button.asrs-btn,
+	.asrs-form-wrapper .asrs-form .asrs-input {
+		transition: none;
+	}
+
+	.asrs-form-wrapper .asrs-form button.asrs-btn-primary:hover:not(:disabled) {
+		transform: none;
 	}
 }

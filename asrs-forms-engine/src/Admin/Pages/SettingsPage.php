@@ -77,6 +77,43 @@ class SettingsPage extends AbstractPage {
 						<td><input type="password" id="turnstile_secret_key" name="turnstile_secret_key" class="regular-text code" value="<?php echo esc_attr( Crypto::mask( (string) $cfg['turnstile_secret_key'] ) ); ?>" autocomplete="new-password" /></td>
 					</tr>
 					<tr>
+						<th><label for="recaptcha_enabled"><?php esc_html_e( 'Google reCAPTCHA', 'asrs-forms-engine' ); ?></label></th>
+						<td>
+							<label>
+								<input type="checkbox" id="recaptcha_enabled" name="recaptcha_enabled" value="1" <?php checked( ! empty( $cfg['recaptcha_enabled'] ) ); ?> />
+								<?php esc_html_e( 'Enable Google reCAPTCHA on all forms', 'asrs-forms-engine' ); ?>
+							</label>
+							<p class="description"><?php esc_html_e( 'Create keys at google.com/recaptcha/admin for this domain. The key type must match the version selected below.', 'asrs-forms-engine' ); ?></p>
+						</td>
+					</tr>
+					<tr>
+						<th><label for="recaptcha_version"><?php esc_html_e( 'reCAPTCHA Version', 'asrs-forms-engine' ); ?></label></th>
+						<td>
+							<select id="recaptcha_version" name="recaptcha_version">
+								<option value="v2" <?php selected( (string) ( $cfg['recaptcha_version'] ?? 'v2' ), 'v2' ); ?>><?php esc_html_e( 'v2 — "I\'m not a robot" checkbox', 'asrs-forms-engine' ); ?></option>
+								<option value="v3" <?php selected( (string) ( $cfg['recaptcha_version'] ?? 'v2' ), 'v3' ); ?>><?php esc_html_e( 'v3 — invisible score-based', 'asrs-forms-engine' ); ?></option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<th><label for="recaptcha_site_key"><?php esc_html_e( 'reCAPTCHA Site Key', 'asrs-forms-engine' ); ?></label></th>
+						<td><input type="text" id="recaptcha_site_key" name="recaptcha_site_key" class="regular-text code" value="<?php echo esc_attr( (string) ( $cfg['recaptcha_site_key'] ?? '' ) ); ?>" /></td>
+					</tr>
+					<tr>
+						<th><label for="recaptcha_secret_key"><?php esc_html_e( 'reCAPTCHA Secret Key', 'asrs-forms-engine' ); ?></label></th>
+						<td>
+							<input type="password" id="recaptcha_secret_key" name="recaptcha_secret_key" class="regular-text code" value="<?php echo esc_attr( Crypto::mask( (string) ( $cfg['recaptcha_secret_key'] ?? '' ) ) ); ?>" autocomplete="new-password" />
+							<p class="description"><?php esc_html_e( 'Stored encrypted. Leave unchanged to keep the saved key; enter __CLEAR__ to remove it.', 'asrs-forms-engine' ); ?></p>
+						</td>
+					</tr>
+					<tr>
+						<th><label for="recaptcha_min_score"><?php esc_html_e( 'v3 Minimum Score', 'asrs-forms-engine' ); ?></label></th>
+						<td>
+							<input type="number" id="recaptcha_min_score" name="recaptcha_min_score" min="0" max="1" step="0.1" value="<?php echo esc_attr( (string) ( $cfg['recaptcha_min_score'] ?? 0.5 ) ); ?>" />
+							<p class="description"><?php esc_html_e( 'Only used with v3. Submissions scoring below this value (0.0 – 1.0) are rejected. Google recommends 0.5.', 'asrs-forms-engine' ); ?></p>
+						</td>
+					</tr>
+					<tr>
 						<th><label for="store_ip_address"><?php esc_html_e( 'Store Visitor IP Address', 'asrs-forms-engine' ); ?></label></th>
 						<td>
 							<label>

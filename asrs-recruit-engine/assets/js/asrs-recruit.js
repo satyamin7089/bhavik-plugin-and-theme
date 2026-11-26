@@ -50,6 +50,85 @@
 		});
 	});
 
+	// Optional Google reCAPTCHA (configured in Recruit → Settings).
+	var rcCfg = (window.asrsRecruitConfig && window.asrsRecruitConfig.recaptcha) || {};
+	var rcOn = !!(rcCfg.enabled && rcCfg.siteKey);
+
+	function whenRecaptchaReady(cb, tries) {
+		tries = tries || 0;
+		if (window.grecaptcha && typeof window.grecaptcha.ready === 'function') {
+			window.grecaptcha.ready(cb);
+			return;
+		}
+		if (tries < 150) {
+			setTimeout(function () { whenRecaptchaReady(cb, tries + 1); }, 200);
+		}
+	}
+
+	function recaptchaWidgetId(form) {
+		var el = form.querySelector('.asrs-g-recaptcha');
+		if (!el) {
+			return null;
+		}
+		var id = el.getAttribute('data-widget-id');
+		return id === null ? null : parseInt(id, 10);
+	}
+
+	if (rcOn && rcCfg.version !== 'v3') {
+		whenRecaptchaReady(function () {
+			if (typeof window.grecaptcha.render !== 'function') {
+				return;
+			}
+			document.querySelectorAll('.asrs-recruit-form .asrs-g-recaptcha').forEach(function (el) {
+				if (el.getAttribute('data-widget-id') !== null) {
+					return;
+				}
+				try {
+					var id = window.grecaptcha.render(el, { sitekey: el.getAttribute('data-sitekey') || rcCfg.siteKey });
+					el.setAttribute('data-widget-id', String(id));
+				} catch (err) {}
+			});
+		});
+	}
+
+	function getRecaptchaToken(form) {
+		if (!rcOn) {
+			return Promise.resolve(null);
+		}
+		if (rcCfg.version === 'v3') {
+			return new Promise(function (resolve) {
+				if (!window.grecaptcha || typeof window.grecaptcha.ready !== 'function') {
+					resolve('');
+					return;
+				}
+				window.grecaptcha.ready(function () {
+					try {
+						window.grecaptcha.execute(rcCfg.siteKey, { action: rcCfg.action || 'asrs_recruit_apply' })
+							.then(function (token) { resolve(token || ''); }, function () { resolve(''); });
+					} catch (err) {
+						resolve('');
+					}
+				});
+			});
+		}
+		var id = recaptchaWidgetId(form);
+		var token = '';
+		if (window.grecaptcha && id !== null) {
+			try { token = window.grecaptcha.getResponse(id) || ''; } catch (err) {}
+		}
+		return Promise.resolve(token);
+	}
+
+	function resetRecaptcha(form) {
+		if (!rcOn || rcCfg.version === 'v3' || !window.grecaptcha) {
+			return;
+		}
+		var id = recaptchaWidgetId(form);
+		if (id !== null) {
+			try { window.grecaptcha.reset(id); } catch (err) {}
+		}
+	}
+
 	// 2. Application form multipart AJAX submission.
 	document.querySelectorAll('.asrs-recruit-form').forEach(function (form) {
 		var fileInput = form.querySelector('.asrs-file-input');
@@ -104,11 +183,17 @@
 
 			var formData = new FormData(form);
 
-			fetch(cfg.ajaxUrl || '/wp-admin/admin-ajax.php', {
-				method: 'POST',
-				body: formData,
-				credentials: 'same-origin'
-			})
+			getRecaptchaToken(form)
+				.then(function (recaptchaToken) {
+					if (recaptchaToken !== null) {
+						formData.set('g-recaptcha-response', recaptchaToken);
+					}
+					return fetch(cfg.ajaxUrl || '/wp-admin/admin-ajax.php', {
+						method: 'POST',
+						body: formData,
+						credentials: 'same-origin'
+					});
+				})
 				.then(function (res) {
 					return res.json();
 				})
@@ -154,6 +239,7 @@
 					if (btnLabel && cfg.submitLabel) {
 						btnLabel.textContent = cfg.submitLabel;
 					}
+					resetRecaptcha(form);
 				});
 		});
 	});

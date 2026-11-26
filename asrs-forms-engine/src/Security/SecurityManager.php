@@ -1,6 +1,6 @@
 <?php
 /**
- * Request security, CSRF, Honeypot, Timing, and Turnstile enforcement.
+ * Request security, CSRF, Honeypot, Timing, Turnstile and reCAPTCHA enforcement.
  *
  * @package ASRS\FormsEngine\Security
  */
@@ -21,10 +21,12 @@ class SecurityManager {
 
 	private Settings $settings;
 	private TurnstileVerifier $turnstile;
+	private RecaptchaVerifier $recaptcha;
 
-	public function __construct( Settings $settings, TurnstileVerifier $turnstile ) {
+	public function __construct( Settings $settings, TurnstileVerifier $turnstile, ?RecaptchaVerifier $recaptcha = null ) {
 		$this->settings  = $settings;
 		$this->turnstile = $turnstile;
+		$this->recaptcha = $recaptcha ?? new RecaptchaVerifier( $settings );
 	}
 
 	/**
@@ -78,6 +80,14 @@ class SecurityManager {
 			$turn_check = $this->turnstile->verify( $token );
 			if ( is_wp_error( $turn_check ) ) {
 				return $turn_check;
+			}
+		}
+
+		if ( $this->recaptcha->is_enabled() ) {
+			$token         = isset( $post['g-recaptcha-response'] ) ? sanitize_text_field( wp_unslash( (string) $post['g-recaptcha-response'] ) ) : '';
+			$captcha_check = $this->recaptcha->verify( $token );
+			if ( is_wp_error( $captcha_check ) ) {
+				return $captcha_check;
 			}
 		}
 
